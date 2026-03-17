@@ -2,6 +2,7 @@ package com.edgar.github.libraryapi.controller;
 
 import com.edgar.github.libraryapi.dto.AutorDTO;
 import com.edgar.github.libraryapi.model.Autor;
+import com.edgar.github.libraryapi.service.AutorService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -14,10 +15,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/autores")
 public class AutorController {
 
+    private AutorService service;
+
+    public AutorController(AutorService service) {
+        this.service = service;
+    }
+
     @PostMapping
     public ResponseEntity salvar(@RequestBody AutorDTO autor){
 
         Autor autorEntity = autor.mapearParaAutor();
+        service.salvar(autorEntity);
 
         return new ResponseEntity("Teste: " + autor, HttpStatus.CREATED);
     }
