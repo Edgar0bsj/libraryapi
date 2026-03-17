@@ -4,15 +4,15 @@ import com.edgar.github.libraryapi.dto.AutorDTO;
 import com.edgar.github.libraryapi.dto.AutorResponseDTO;
 import com.edgar.github.libraryapi.model.Autor;
 import com.edgar.github.libraryapi.service.AutorService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.net.URL;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/autores")
@@ -71,5 +71,22 @@ public class AutorController {
 
         return ResponseEntity.noContent().build();
 
+    }
+
+    @GetMapping
+    public ResponseEntity<List<AutorResponseDTO>> pesquisa(
+            @RequestParam(value = "nome", required = false) String nome,
+            @RequestParam(value = "nacionalidade", required = false) String nacionalidade
+    ){
+        List<Autor> resultado = this.service.pesquisa(nome,nacionalidade);
+        List<AutorResponseDTO> lista = resultado.stream()
+                .map(autor-> new AutorResponseDTO(
+                        autor.getId(),
+                        autor.getNome(),
+                        autor.getDataNascimento(),
+                        autor.getNacionalidade())
+                ).collect(Collectors.toList());
+
+        return ResponseEntity.ok(lista);
     }
 }
