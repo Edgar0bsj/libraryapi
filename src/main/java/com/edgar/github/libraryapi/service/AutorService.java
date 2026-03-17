@@ -42,4 +42,11 @@ public class AutorService {
         return this.repository.findAll();
 
     }
+
+    public void atualizar(Autor autor){
+        if (autor.getId() == null){
+            throw new IllegalArgumentException("Para atualizar é necessário que o Autor já exista no banco de dados");
+        }
+        this.repository.save(autor);
+    }
 }
