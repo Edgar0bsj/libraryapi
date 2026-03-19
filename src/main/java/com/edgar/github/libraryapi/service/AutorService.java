@@ -2,6 +2,7 @@ package com.edgar.github.libraryapi.service;
 
 import com.edgar.github.libraryapi.model.Autor;
 import com.edgar.github.libraryapi.repository.AutorRepository;
+import com.edgar.github.libraryapi.validador.AutorValidador;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,17 +11,21 @@ import java.util.UUID;
 
 @Service
 public class AutorService {
-    private AutorRepository repository;
+    private final AutorRepository repository;
+    private final AutorValidador validador;
 
-    public AutorService(AutorRepository repository) {
+    public AutorService(AutorRepository repository, AutorValidador validador) {
         this.repository = repository;
+        this.validador = validador;
     }
 
     public Autor salvar(Autor autor){
+        this.validador.validar(autor);
         return repository.save(autor);
     }
 
     public Optional<Autor> obterPorId(UUID id){
+
         return repository.findById(id);
     }
 
@@ -47,6 +52,7 @@ public class AutorService {
         if (autor.getId() == null){
             throw new IllegalArgumentException("Para atualizar é necessário que o Autor já exista no banco de dados");
         }
+        this.validador.validar(autor);
         this.repository.save(autor);
     }
 }

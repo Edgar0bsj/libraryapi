@@ -3,9 +3,11 @@ package com.edgar.github.libraryapi.validador;
 import com.edgar.github.libraryapi.exceptions.RegistroDuplicado;
 import com.edgar.github.libraryapi.model.Autor;
 import com.edgar.github.libraryapi.repository.AutorRepository;
+import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
+@Component
 public class AutorValidador {
 
     private AutorRepository repository;
