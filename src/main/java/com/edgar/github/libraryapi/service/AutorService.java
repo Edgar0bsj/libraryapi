@@ -1,7 +1,9 @@
 package com.edgar.github.libraryapi.service;
 
+import com.edgar.github.libraryapi.exceptions.OperacaoNaoPermitida;
 import com.edgar.github.libraryapi.model.Autor;
 import com.edgar.github.libraryapi.repository.AutorRepository;
+import com.edgar.github.libraryapi.repository.LivroRepository;
 import com.edgar.github.libraryapi.validador.AutorValidador;
 import org.springframework.stereotype.Service;
 
@@ -12,11 +14,13 @@ import java.util.UUID;
 @Service
 public class AutorService {
     private final AutorRepository repository;
+    private final LivroRepository livroRepository;
     private final AutorValidador validador;
 
-    public AutorService(AutorRepository repository, AutorValidador validador) {
+    public AutorService(AutorRepository repository, AutorValidador validador, LivroRepository livroRepository) {
         this.repository = repository;
         this.validador = validador;
+        this.livroRepository = livroRepository;
     }
 
     public Autor salvar(Autor autor){
@@ -30,6 +34,9 @@ public class AutorService {
     }
 
     public void deletar(Autor autor){
+        if (possuirLivro(autor)){
+            throw new OperacaoNaoPermitida("Autor possui livros cadastrados!");
+        }
         this.repository.delete(autor);
     }
 
@@ -54,5 +61,9 @@ public class AutorService {
         }
         this.validador.validar(autor);
         this.repository.save(autor);
+    }
+
+    public boolean possuirLivro(Autor autor){
+        return this.livroRepository.existsByAutor(autor);
     }
 }
