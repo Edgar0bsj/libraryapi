@@ -6,6 +6,7 @@ import com.edgar.github.libraryapi.dto.ErroResponseDTO;
 import com.edgar.github.libraryapi.exceptions.RegistroDuplicado;
 import com.edgar.github.libraryapi.model.Autor;
 import com.edgar.github.libraryapi.service.AutorService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -18,13 +19,11 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/autores")
+@RequiredArgsConstructor
 public class AutorController {
 
     private AutorService service;
 
-    public AutorController(AutorService service) {
-        this.service = service;
-    }
 
     @PostMapping
     public ResponseEntity<Object> salvar(@RequestBody AutorDTO autor){
