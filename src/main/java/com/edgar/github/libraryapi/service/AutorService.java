@@ -1,11 +1,14 @@
 package com.edgar.github.libraryapi.service;
 
+import com.edgar.github.libraryapi.dto.AutorDTO;
 import com.edgar.github.libraryapi.exceptions.OperacaoNaoPermitida;
 import com.edgar.github.libraryapi.model.Autor;
 import com.edgar.github.libraryapi.repository.AutorRepository;
 import com.edgar.github.libraryapi.repository.LivroRepository;
 import com.edgar.github.libraryapi.validador.AutorValidador;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -48,6 +51,23 @@ public class AutorService {
             return this.autorRepository.findByNacionalidade(nacionalidade);
         }
         return this.autorRepository.findAll();
+
+    }
+
+    public List<Autor> pesquisaByExample(String nome, String nacionalidade){
+        Autor autor = new Autor();
+        autor.setNome(nome);
+        autor.setNacionalidade(nacionalidade);
+
+        ExampleMatcher exampleMatcher = ExampleMatcher
+                .matching()
+                .withIgnoreNullValues()
+                .withIgnoreCase()
+                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+
+        Example<Autor> autorExample = Example.of(autor, exampleMatcher);
+
+        return this.autorRepository.findAll(autorExample);
 
     }
 
