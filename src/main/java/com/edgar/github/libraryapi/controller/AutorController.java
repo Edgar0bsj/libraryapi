@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AutorController {
 
-    private AutorService service;
+    private final AutorService service;
 
 
     @PostMapping
