@@ -1,6 +1,5 @@
 package com.edgar.github.libraryapi.service;
 
-import com.edgar.github.libraryapi.dto.AutorDTO;
 import com.edgar.github.libraryapi.exceptions.OperacaoNaoPermitida;
 import com.edgar.github.libraryapi.model.Autor;
 import com.edgar.github.libraryapi.repository.AutorRepository;

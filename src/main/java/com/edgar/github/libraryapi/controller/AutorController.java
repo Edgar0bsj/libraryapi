@@ -1,8 +1,8 @@
 package com.edgar.github.libraryapi.controller;
 
-import com.edgar.github.libraryapi.dto.AutorDTO;
-import com.edgar.github.libraryapi.dto.AutorResponseDTO;
-import com.edgar.github.libraryapi.dto.ErroResponseDTO;
+import com.edgar.github.libraryapi.dto.autor.AutorDTO;
+import com.edgar.github.libraryapi.dto.autor.AutorResponseDTO;
+import com.edgar.github.libraryapi.dto.autor.ErroResponseDTO;
 import com.edgar.github.libraryapi.exceptions.RegistroDuplicado;
 import com.edgar.github.libraryapi.model.Autor;
 import com.edgar.github.libraryapi.service.AutorService;

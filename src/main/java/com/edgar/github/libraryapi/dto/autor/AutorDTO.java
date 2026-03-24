@@ -1,4 +1,4 @@
-package com.edgar.github.libraryapi.dto;
+package com.edgar.github.libraryapi.dto.autor;
 
 import com.edgar.github.libraryapi.model.Autor;
 import jakarta.validation.constraints.NotBlank;

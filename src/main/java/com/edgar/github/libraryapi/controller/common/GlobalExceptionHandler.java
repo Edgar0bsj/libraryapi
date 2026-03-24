@@ -1,13 +1,13 @@
 package com.edgar.github.libraryapi.controller.common;
 
-import com.edgar.github.libraryapi.dto.ErroDTO;
+import com.edgar.github.libraryapi.dto.autor.ErroDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import com.edgar.github.libraryapi.dto.ErroResponseDTO;
+import com.edgar.github.libraryapi.dto.autor.ErroResponseDTO;
 
 import java.util.List;
 import java.util.stream.Collectors;

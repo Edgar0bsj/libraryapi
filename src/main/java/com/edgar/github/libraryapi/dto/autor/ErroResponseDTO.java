@@ -1,4 +1,4 @@
-package com.edgar.github.libraryapi.dto;
+package com.edgar.github.libraryapi.dto.autor;
 
 import org.springframework.http.HttpStatus;
 

@@ -1,6 +1,4 @@
-package com.edgar.github.libraryapi.dto;
-
-import com.edgar.github.libraryapi.model.Autor;
+package com.edgar.github.libraryapi.dto.autor;
 
 import java.time.LocalDate;
 import java.util.UUID;
