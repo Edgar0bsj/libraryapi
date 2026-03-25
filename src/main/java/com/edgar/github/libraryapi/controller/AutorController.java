@@ -4,6 +4,7 @@ import com.edgar.github.libraryapi.dto.autor.AutorDTO;
 import com.edgar.github.libraryapi.dto.autor.AutorResponseDTO;
 import com.edgar.github.libraryapi.dto.autor.ErroResponseDTO;
 import com.edgar.github.libraryapi.exceptions.RegistroDuplicado;
+import com.edgar.github.libraryapi.mappers.AutorMapper;
 import com.edgar.github.libraryapi.model.Autor;
 import com.edgar.github.libraryapi.service.AutorService;
 import jakarta.validation.Valid;
@@ -24,19 +25,20 @@ import java.util.stream.Collectors;
 public class AutorController {
 
     private final AutorService service;
+    private final AutorMapper mapper;
 
 
     @PostMapping
-    public ResponseEntity<Object> salvar(@RequestBody @Valid AutorDTO autor){
+    public ResponseEntity<Object> salvar(@RequestBody @Valid AutorDTO dto){
 
         try {
-            Autor autorEntity = autor.mapearParaAutor();
-            service.salvar(autorEntity);
+            Autor entity = this.mapper.toEntity(dto);
+            service.salvar(entity);
 
             URI location = ServletUriComponentsBuilder
                     .fromCurrentRequest()
                     .path("/{id}")
-                    .buildAndExpand(autorEntity.getId())
+                    .buildAndExpand(entity.getId())
                     .toUri();
 
 
@@ -49,18 +51,13 @@ public class AutorController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<AutorResponseDTO> obterDetalhes(@PathVariable("id") String id) {
+    public ResponseEntity<AutorDTO> obterDetalhes(@PathVariable("id") String id) {
         UUID autorId = UUID.fromString(id);
         Optional<Autor> autorOptional = this.service.obterPorId(autorId);
 
         if (autorOptional.isPresent()) {
             Autor autorEntity = autorOptional.get();
-            AutorResponseDTO dto = new AutorResponseDTO(
-                    autorEntity.getId(),
-                    autorEntity.getNome(),
-                    autorEntity.getDataNascimento(),
-                    autorEntity.getNacionalidade()
-            );
+            AutorDTO dto = this.mapper.toDTO(autorEntity);
             return ResponseEntity.ok(dto);
         }
         return ResponseEntity.notFound().build();
