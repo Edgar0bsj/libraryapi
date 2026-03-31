@@ -5,6 +5,7 @@ import com.edgar.github.libraryapi.dto.livro.CadastroLivroDTO;
 import com.edgar.github.libraryapi.exceptions.RegistroDuplicado;
 import com.edgar.github.libraryapi.mappers.LivroMapper;
 import com.edgar.github.libraryapi.model.Livro;
+import com.edgar.github.libraryapi.service.LivroService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,12 +20,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class LivroController {
 
     private final LivroMapper mapper;
+    private final LivroService service;
 
     @PostMapping
     public ResponseEntity<Object> salvar(@RequestBody @Valid CadastroLivroDTO livroDTO){
         try{
             Livro livro = mapper.toEntity(livroDTO);
-
+            service.salvar(livro);
 
             return ResponseEntity.ok(livro);
         }catch (RegistroDuplicado err) {
