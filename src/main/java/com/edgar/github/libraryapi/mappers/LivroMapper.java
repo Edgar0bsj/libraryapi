@@ -1,13 +1,14 @@
 package com.edgar.github.libraryapi.mappers;
 
 import com.edgar.github.libraryapi.dto.livro.CadastroLivroDTO;
+import com.edgar.github.libraryapi.dto.livro.ResultadoPesquisaLivroDTO;
 import com.edgar.github.libraryapi.model.Livro;
 import com.edgar.github.libraryapi.repository.AutorRepository;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = AutorMapper.class)
 public abstract class LivroMapper {
 
     @Autowired
@@ -15,4 +16,6 @@ public abstract class LivroMapper {
 
     @Mapping(target = "autor", expression = "java( autorRepository.findById(dto.idAutor()).orElse(null) )")
     public abstract Livro toEntity(CadastroLivroDTO dto);
+
+    public abstract ResultadoPesquisaLivroDTO toDTO(Livro livro);
 }

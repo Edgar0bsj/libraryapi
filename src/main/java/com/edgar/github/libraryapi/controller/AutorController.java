@@ -29,7 +29,7 @@ public class AutorController implements GenericController {
 
 
     @PostMapping
-    public ResponseEntity<Object> salvar(@RequestBody @Valid AutorDTO dto) {
+    public ResponseEntity<Void> salvar(@RequestBody @Valid AutorDTO dto) {
 
 
         Autor entity = this.mapper.toEntity(dto);
@@ -88,7 +88,7 @@ public class AutorController implements GenericController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Object> atualizar(
+    public ResponseEntity<Void> atualizar(
             @PathVariable("id") String id,
             @RequestBody AutorResponseDTO autorDto
     ) {
