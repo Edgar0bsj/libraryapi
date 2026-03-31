@@ -14,21 +14,25 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URI;
+
 @RestController
 @RequestMapping("/livros")
 @RequiredArgsConstructor
-public class LivroController {
+public class LivroController implements GenericController {
 
     private final LivroMapper mapper;
     private final LivroService service;
 
     @PostMapping
-    public ResponseEntity<Object> salvar(@RequestBody @Valid CadastroLivroDTO livroDTO){
-        try{
+    public ResponseEntity<Object> salvar(@RequestBody @Valid CadastroLivroDTO livroDTO) {
+        try {
             Livro livro = mapper.toEntity(livroDTO);
             service.salvar(livro);
 
-            return ResponseEntity.ok(livro);
+            URI location = gerarHandlerLocation(livro.getId());
+
+            return ResponseEntity.created(location).build();
         }catch (RegistroDuplicado err) {
             var erroDto = ErroResponseDTO.conflito(err.getMessage());
             return ResponseEntity.status(erroDto.Status()).body(erroDto);
