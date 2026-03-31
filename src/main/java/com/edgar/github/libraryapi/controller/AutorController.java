@@ -22,26 +22,23 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/autores")
 @RequiredArgsConstructor
-public class AutorController implements GenericController{
+public class AutorController implements GenericController {
 
     private final AutorService service;
     private final AutorMapper mapper;
 
 
     @PostMapping
-    public ResponseEntity<Object> salvar(@RequestBody @Valid AutorDTO dto){
+    public ResponseEntity<Object> salvar(@RequestBody @Valid AutorDTO dto) {
 
-        try {
-            Autor entity = this.mapper.toEntity(dto);
-            service.salvar(entity);
 
-            URI location = gerarHandlerLocation(entity.getId());
+        Autor entity = this.mapper.toEntity(dto);
+        service.salvar(entity);
 
-            return ResponseEntity.created(location).build();
-        } catch (RegistroDuplicado err){
-            var errDTO = ErroResponseDTO.conflito(err.getMessage());
-            return ResponseEntity.status(errDTO.Status()).body(errDTO);
-        }
+        URI location = gerarHandlerLocation(entity.getId());
+
+        return ResponseEntity.created(location).build();
+
 
     }
 
@@ -59,12 +56,12 @@ public class AutorController implements GenericController{
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> deletar(@PathVariable("id") String id){
+    public ResponseEntity<Void> deletar(@PathVariable("id") String id) {
 
         UUID autorId = UUID.fromString(id);
         Optional<Autor> autorOptional = this.service.obterPorId(autorId);
 
-        if (autorOptional.isEmpty()){
+        if (autorOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         this.service.deletar(autorOptional.get());
@@ -77,10 +74,10 @@ public class AutorController implements GenericController{
     public ResponseEntity<List<AutorResponseDTO>> pesquisa(
             @RequestParam(value = "nome", required = false) String nome,
             @RequestParam(value = "nacionalidade", required = false) String nacionalidade
-    ){
-        List<Autor> resultado = this.service.pesquisaByExample(nome,nacionalidade);
+    ) {
+        List<Autor> resultado = this.service.pesquisaByExample(nome, nacionalidade);
         List<AutorResponseDTO> lista = resultado.stream()
-                .map(autor-> new AutorResponseDTO(
+                .map(autor -> new AutorResponseDTO(
                         autor.getId(),
                         autor.getNome(),
                         autor.getDataNascimento(),
@@ -94,26 +91,23 @@ public class AutorController implements GenericController{
     public ResponseEntity<Object> atualizar(
             @PathVariable("id") String id,
             @RequestBody AutorResponseDTO autorDto
-    ){
-        try {
-            UUID autorId = UUID.fromString(id);
-            Optional<Autor> autorOptional = service.obterPorId(autorId);
+    ) {
 
-            if (autorOptional.isEmpty()) {
-                return ResponseEntity.notFound().build();
-            }
+        UUID autorId = UUID.fromString(id);
+        Optional<Autor> autorOptional = service.obterPorId(autorId);
 
-            Autor autor = autorOptional.get();
-            autor.setNome(autorDto.nome());
-            autor.setNacionalidade(autorDto.nacionalidade());
-            autor.setDataNascimento(autorDto.dataNascimento());
-
-            this.service.atualizar(autor);
-
-            return ResponseEntity.noContent().build();
-        }catch (RegistroDuplicado err){
-            var errDTO = ErroResponseDTO.conflito(err.getMessage());
-            return ResponseEntity.status(errDTO.Status()).body(errDTO);
+        if (autorOptional.isEmpty()) {
+            return ResponseEntity.notFound().build();
         }
+
+        Autor autor = autorOptional.get();
+        autor.setNome(autorDto.nome());
+        autor.setNacionalidade(autorDto.nacionalidade());
+        autor.setDataNascimento(autorDto.dataNascimento());
+
+        this.service.atualizar(autor);
+
+        return ResponseEntity.noContent().build();
+
     }
 }
